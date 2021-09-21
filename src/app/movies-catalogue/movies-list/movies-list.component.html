@@ -1,25 +1,29 @@
-<div class="d-flex justify-content-center flex-wrap">
-    <div class="p-2" style="width: 30%;">
+<div 
+class="d-flex justify-content-center flex-wrap"
+>
+        <div class="p-2" *ngFor="let movie of movieList;">
+            <app-movies-item [movie]="movie"></app-movies-item>
+        </div>
+    
+    
+    <!-- <div class="p-2" >
         <app-movies-item></app-movies-item>
     </div>
-    <div class="p-2" style="width: 30%;">
+    <div class="p-2" >
         <app-movies-item></app-movies-item>
     </div>
-    <div class="p-2" style="width: 30%;">
+    <div class="p-2" >
         <app-movies-item></app-movies-item>
     </div>
-    <div class="p-2" style="width: 30%;">
+    <div class="p-2" >
         <app-movies-item></app-movies-item>
     </div>
-    <div class="p-2" style="width: 30%;">
+    <div class="p-2" >
         <app-movies-item></app-movies-item>
     </div>
-    <div class="p-2" style="width: 30%;">
+    <div class="p-2" >
         <app-movies-item></app-movies-item>
-    </div>
-    <div class="p-2" style="width: 30%;">
-        <app-movies-item></app-movies-item>
-    </div>
+    </div> -->
     
     
   </div>

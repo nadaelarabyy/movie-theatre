@@ -1,5 +1,9 @@
+import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
 import { User } from "./user.model";
-
+@Injectable({
+    providedIn: 'root'
+  })
 export class UserService{
     private users:User[]=[
         new User('nadaelaraby@yahoo.com','nadodi@123'),
@@ -11,8 +15,10 @@ export class UserService{
     ];
     login(user:User):boolean{
         for(let user1 of this.users){
-            if(user.email === user1.email && user.password === user1.password)
+            if(user.email === user1.email && user.password === user1.password){
+                
                 return true;
+            }
         }
         return false;
     }
@@ -21,5 +27,6 @@ export class UserService{
         const user = this.users[rand];
         return new User(user.email,user.password);
     }
+    
 
 }

@@ -1,6 +1,10 @@
     <div class="row" style="border: 1px solid red;">
-        <div class="col-xl-12">
-            <app-movies-list></app-movies-list>
-            <!-- <app-movies-detail></app-movies-detail> -->
+        <div class="col-xl-12" >
+            <!-- <app-movies-list></app-movies-list> -->
+            <router-outlet></router-outlet>
         </div>
+        <!-- <div class="col-xl-12" *ngIf="!loggedIn">
+            <app-error-page></app-error-page>
+        </div> -->
+
     </div>

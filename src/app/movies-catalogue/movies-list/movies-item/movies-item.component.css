@@ -1,8 +1,72 @@
-.example-card {
+/* .example-card {
     max-width: 400px;
   }
   
   .example-header-image {
     background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
     background-size: cover;
-  }
+  } */
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+/* body {
+  height: 100vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-image: linear-gradient(to right, #d3dee9, #cbdbec, #c3d9ef, #bad6f1, #b1d4f4);
+} */
+
+fieldset,
+label {
+  margin: 0;
+  padding: 0;
+}
+
+
+h2 {
+  margin: 0;
+  padding: 5px;
+}
+
+.card-container {
+  height: 350px;
+  background-size: cover;
+  width: 250px;
+  border-radius: 30px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 80px 0;
+  transition: all 0.3s;
+  cursor: pointer;
+  /* background-image: url(http://www.loucademiadecinema.com.br/wp-content/uploads/2019/02/alita-battle-angel-5c50c0826d3c2-718x1024.jpg); */
+}
+.card-container:hover {
+  transform: scale(1.1);
+}
+.card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  min-height: 100px;
+  max-height: 400px;
+  width: calc(100% - 2rem);
+  border-radius: 20px;
+  background-color: #ffffff;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  box-shadow: 0px 2px 20px 0px #67676738;
+  padding: 0 1rem;
+}
+.card-title {
+  font-size: 15px;
+  text-align: start;
+  margin: 2px 0;
+}
+.card-actors {
+  font-size: 11px;
+  text-align: start;
+  margin: 0 0 2px 0;
+}

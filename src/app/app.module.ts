@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
-
+import {MatChipsModule} from '@angular/material/chips';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -18,11 +17,15 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from './users.service';
 import { MoviesService } from './movies-catalogue/movies.service';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 const appRoutes:Routes=[
   {path:'',component:LoginCardComponent,pathMatch:'full'},
-  {path:'movies',component:MoviesCatalogueComponent},
-  {path:'movies/:id',component:MoviesDetailComponent}
+  {path:'movies',component:MoviesCatalogueComponent,children:[
+    {path:'',component:MoviesListComponent},
+    {path:':id',component:MoviesDetailComponent},
+  ]},
+  {path:'error',component:ErrorPageComponent}
 ];
 @NgModule({
   declarations: [
@@ -40,9 +43,10 @@ const appRoutes:Routes=[
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
-    MatCardModule,
+    MatChipsModule,
     MatIconModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    HttpClientModule
 
   ],
   providers: [UserService,MoviesService],

@@ -1,104 +1,162 @@
 <div class="container-fluid">
-    <div class="row"> <!-- ------------@@@@@@@@@@@@@----------------- -->
-        <!-- ----------------POSTER-------------------------------- -->
-            <div class="col-sm-4 d-flex align-items-center" style="border: 2px solid blue;"> 
+    <h2>{{movieDetails.title}}</h2>
+    <div class="row">
+        <div class="d-flex">
+            <div class="p-2">
                 <div> 
-                <img  
-                class="" 
-                width="90%"
-                alt="Ad Astra movie poster" 
-                
-                src="https://lumiere-a.akamaihd.net/v1/images/p_adastra_20097_040ab0d1.jpeg">   
-            </div> 
-            </div> 
-        <!-- ----------------------------------------------------- -->
-    <!-- ----------------------------***************----------------------------------------- -->
-            <div class="col-sm-8 d-flex flex-column" style="border: 2px solid violet;">
-                <div class="p-2">
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <h1>Ad Astra</h1>
-                        </div>
-                        <div class="col-sm-4 d-flex flex-row align-items-center">
-                            <div class="p-2">
-                                <mat-icon style="color: blue; transform: scale(1.5);">thumb_up_alt</mat-icon>
-                            </div>
-                            <div>
-                            
-                                22418
-                            
-                            </div>
-                            <div class="p-2">
-                                <mat-icon style="color: #F9C802; transform: scale(1.75);">star</mat-icon>
-                            </div>
-                            <div>
-                                8.4&#47;10
-                            </div>
+                    <img  
+                    class="img-thumbnail rounded"
+                    [src]="movieDetails.imagePath"> 
+                    <button class="btn btn-success btn-block">Homepage</button>  
+                </div> 
 
+            </div>
+                <div class="p-2 col-xs-4" style="border: 1px solid salmon;">
+                    <div class="d-flex flex-column align-items-stretch">
+                        <div class="p-2 d-flex flex-row">
+                            <mat-chip-list
+                            *ngFor="let genre of movieDetails.genres;">
+                                <mat-chip>{{genre['name']}}</mat-chip>
+                              </mat-chip-list>
                         </div>
-
+                        <div class="p-2">
+                            <div class="p-2">
+                                {{movieDetails.overview}}
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            <div class="row col-xs-12">
+                                <div 
+                                class="p-2 col-xs-4 align-self-center">
+                                    <strong>Produced By&nbsp;&nbsp;</strong>
+                                </div>
+                                <div 
+                                class="p-1 col-xs-8 align-self-center" 
+                                *ngFor="let prod of movieDetails.production; let i=index;">
+                                    <div class="d-flex flex-row">
+                                        <div class="pl-1 pr-2">{{prod['name']}}</div>
+                                        <div class="" *ngIf="i!==movieDetails.production.length-1">&#8226;</div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            <div class="row col-xs-12">
+                                <div 
+                                class="p-2 col-xs-4 align-self-center">
+                                    <strong>Stars&nbsp;&nbsp;</strong>
+                                </div>
+                                <div 
+                                class="p-1 col-xs-8 align-self-center" 
+                                *ngFor="let star of stars; let i=index;">
+                                    <div class="d-flex flex-row">
+                                        <div class="pr-2">{{star.name}}</div>
+                                        <div class="" *ngIf="i!==stars.length-1">&#8226;</div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            <div class="row col-xs-12">
+                                <div 
+                                class="p-2 col-xs-4 align-self-center">
+                                    <strong>Directed By&nbsp;&nbsp;</strong>
+                                </div>
+                                <div 
+                                class="p-2 col-xs-8 align-self-center">
+                                    <div class="d-flex flex-row">
+                                        <div class="p-2">{{director}}</div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- -------------------Title-------------------------------  -->
-                   
+
                 </div>
-                 <div class="p-2">   
-                        <!-- ---------------------------------------------  -->
-                        <div class="d-flex flex-row">
-                            <div class="p-2">EN<span>&nbsp;&nbsp;&nbsp;&#8226;</span></div>
-                            <div class="p-2">September 20, 2019<span>&nbsp;&nbsp;&nbsp;&#8226;</span></div>
-                            <div class="p-2">Drama, Suspense, Thriller</div>
-                          </div>   
-                            
-                             
-                    </div> 
-                    <!-- ---------------------------Description---------------------------------- -->                            
-                    <div class="p-2">
-                        <p> 
-                            Brad Pitt gives a powerful performance in this, “absolutely enthralling” (Rolling Stone), 
-                            sci-fi thriller set in space. When a mysterious life-threatening event strikes Earth, astronaut Roy 
-                            McBride (Pitt) goes on a dangerous mission across an unforgiving solar system to uncover the truth 
-                            about his missing father (Tommy Lee Jones) and his doomed expedition that now, 30 years later, 
-                            threatens the universe.  
-                        </p>
+                <div class="p-2 col-xs-4">
+                    <div class="d-flex">
+                        <div class="p-2">
+                            <mat-icon style="color: #F9C802; transform: scale(1.75);">star</mat-icon>
+                        </div>
+                        <div class="p-2">
+                            {{movieDetails.popularity}}&#47;10
+                        </div>
+                    </div>
+                </div>
+        </div>  
+    </div>
+    <div class="row">
+        <div class="col-xs-12 d-flex flex-column">
+            <div class="p-2">
+                <h3>Main Cast</h3>
+            </div>
+            <div style="border: 1px solid red;"
+            class="row">
+                <div class="col-sm-3"
+                *ngFor="let castMem of cast_members;">
+                        <div >
+                            <div class="d-flex flex-row align-items-center">
+
+                                <div class="p-2">
+                                    <img [src]="castMem.image" alt="Avatar" class="avatar">
+                                </div>
+                                <div class="p-1 d-flex flex-column align-items-center">
+                                    <h5 >{{castMem.name}}</h5>
+                                    <p>{{castMem.movieName}}</p>
+                                </div>
+                            </div>
+                        </div>
                         
-
-
                     </div>
-                    <!-- --------------------------------------------------------------------- -->
-                    
-                    <!-- ----------------------------Credits------------------------------------- -->
-        <div class ="align-items-start" style="border: 1px solid pink;">
-            <ul style="list-style-type: none;">   
-                <li> 
-                    <h4> Directed By </h4> 
-                    <div> James Gray <br><br> </div> 
-                </li>    
-                <li> 
-                    <h4> Written By </h4> 
-                    <div> James Gray, James Gray &amp; Ethan Gross, Ethan Gross<br><br> </div>
-                 </li>   
-                  <li> 
-                      <h4> Produced By </h4> 
-                      <div> 
-                          Brad Pitt, Dede Gardner, Jeremy Kleiner, Dede Gardner, p.g.a., James Gray, Jeremy Kleiner
-                          , p.g.a., Anthony Katagas, James Gray, p.g.a., Rodrigo Teixeira, Anthony Katagas, p.g.a.,
-                           Arnon Milchan, Rodrigo Teixeira, p.g.a. 
-                           <br><br>
-                        </div> 
-                    </li>    
-                    <li> 
-                        <h4> Cast </h4> 
-                        <div> Brad Pitt, Tommy Lee Jones, Ruth Negga, Liv Tyler, Donald 
-                            Sutherland 
-                            <br> <br>
-                        </div> 
-                    </li>  
-                 </ul> 
+            </div>
+                
+        </div>
+        
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 d-flex flex-column">
+            <div class="p-2">
+                <h3>Recommendations</h3>
+            </div>
+            <div class="row">
+                <div class="col-xs-2"
+                *ngFor="let movieRecommend of recommendations;">
+                <div class="p-2">
+                    <app-movies-item [movie]="movieRecommend"></app-movies-item>
                 </div>
-                   <!------------------------------------------------------------------------------------  -->
-            
-                               
-                    </div> 
-<!-- ----------------------------***************----------------------------------------- -->
-        </div> <!----------------------@@@@@@---------------------->
+                        
+                    </div>
+            </div>
+                
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="d-flex flex-column">
+            <div class="p-2">
+                <h3>Viewers Reviews</h3>
+            </div>
+            <div class="p-2">
+                <div class="d-flex flex-column" *ngFor="let review of reviews;">
+                    <div class="p-2">
+                        <div class="card w-75">
+                            <div class="pt-4 pl-3 d-flex flex-row">
+                                <h5 class="pr-2">{{review.author}}</h5>
+                                <p class="pr-2"><strong>&#8226;</strong></p>
+                                <p class="pr-2">{{review.dateIssued}}</p>
+
+                            </div>
+                            <div class="card-body">
+                                {{review.content}}
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

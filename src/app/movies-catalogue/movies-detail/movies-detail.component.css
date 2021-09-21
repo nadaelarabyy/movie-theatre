@@ -3,3 +3,9 @@ h2{
   font-weight: 100;
   font-variant: normal;
 }
+.avatar {
+  vertical-align: middle;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+}
