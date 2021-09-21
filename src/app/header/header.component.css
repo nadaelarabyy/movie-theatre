@@ -1,0 +1,13 @@
+nav{
+    /* padding: 1em; */
+    font-size: 3em;      
+}
+div::first-letter {
+    color: #32CD32		;
+    font-family: "Monoton", cursive;
+    padding: 0 0.35em;
+    font-size: 1.5em;
+    font-weight: 500;
+    margin-right: 0.25em;
+    border: 6px double #32CD32		;
+  }
