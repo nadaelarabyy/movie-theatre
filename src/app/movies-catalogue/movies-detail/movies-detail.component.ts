@@ -1,6 +1,7 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { min } from 'rxjs/operators';
+import { UserService } from 'src/app/users.service';
 import { CastMember, Movie, Review } from '../movie.model';
 import { MoviesService } from '../movies.service';
 
@@ -14,14 +15,18 @@ export class MoviesDetailComponent implements OnInit {
   public movieDetails:Movie=new Movie(0,false,[],'','','','',new Date(),0,0,0,'',[]);
   public cast_members!:CastMember[];
   public director!:string;
-  public reviews!:Review[];
+  public reviews:Review[];
   public stars:CastMember[]=[];
   public recommendations:Movie[]=[];
-  constructor(private movService:MoviesService,private router:Router,private route:ActivatedRoute) { 
+  public empty:boolean=false;
+  constructor(private userService:UserService,
+    private movService:MoviesService,
+    private router:Router,
+    private route:ActivatedRoute) { 
   }
   
   ngOnInit(): void {
-    this.route.params.subscribe(routeParams => {
+    this.route.params.subscribe(routeParams=>{
       this.movService.onFetchMovieById(routeParams.id).subscribe(movie=>{
         this.movieDetails = movie;
       });
@@ -36,8 +41,14 @@ export class MoviesDetailComponent implements OnInit {
         this.recommendations = list.slice();
       });
       this.movService.onFetchMovieReviews(routeParams.id).subscribe((list)=>{
-        this.reviews = list.slice();
-      })
+        this.reviews = list;
+        console.log(this.reviews);
+        if(this.reviews.length==0)
+          this.empty=true;
+      });
+
+
+
     });
   }
 getMin(x:number,y:number){

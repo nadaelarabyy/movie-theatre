@@ -7,9 +7,6 @@ import { UserService } from '../users.service';
   styleUrls: ['./movies-catalogue.component.css']
 })
 export class MoviesCatalogueComponent implements OnInit {
-  constructor(private userService:UserService) {
-   }
-
   ngOnInit(): void {
   }
 

@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { User } from "./user.model";
 @Injectable({
     providedIn: 'root'
   })
 export class UserService{
+    loggedInChanged :BehaviorSubject<boolean>=new BehaviorSubject(null);
     private users:User[]=[
         new User('nadaelaraby@yahoo.com','nadodi@123'),
         new User('salmaNabil@gmail.com','salomii@123'),
@@ -13,20 +14,22 @@ export class UserService{
         new User('yomnaabdouelfotouh@yahoo.com','yomna@123'),
         new User('radwataha@yahoo.com','radwa@123')
     ];
-    login(user:User):boolean{
+    login(user:User){
         for(let user1 of this.users){
             if(user.email === user1.email && user.password === user1.password){
                 
-                return true;
+                 this.loggedInChanged.next(true);
+                 return;
             }
         }
-        return false;
+        this.loggedInChanged.next(null);
     }
     getRandomUser():User{
         const rand = Math.floor(Math.random() * this.users.length);
         const user = this.users[rand];
         return new User(user.email,user.password);
     }
+    
     
 
 }

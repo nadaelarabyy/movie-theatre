@@ -33,7 +33,7 @@ export class MoviesService{
             const movieDetails = new Movie(responseData['id'],responseData['adult'],responseData['genres'],
             responseData['homepage'],responseData['original_language'],responseData['title'],responseData['overview'],
             new Date(responseData['release_date']),responseData['vote_count'],responseData['vote_average'],
-            responseData['runtime'],`http://image.tmdb.org/t/p/w185${responseData['poster_path']}`,
+            responseData['runtime'],`http://image.tmdb.org/t/p/w342${responseData['poster_path']}`,
             responseData['production_companies']);
             return movieDetails;
         })

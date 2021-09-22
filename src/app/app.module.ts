@@ -18,10 +18,13 @@ import { UserService } from './users.service';
 import { MoviesService } from './movies-catalogue/movies.service';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthGuard } from './auth-gurad.service';
 
 const appRoutes:Routes=[
   {path:'',component:LoginCardComponent,pathMatch:'full'},
-  {path:'movies',component:MoviesCatalogueComponent,children:[
+  {path:'movies',component:MoviesCatalogueComponent
+  ,canActivate:[AuthGuard]
+  ,children:[
     {path:'',component:MoviesListComponent},
     {path:':id',component:MoviesDetailComponent},
   ]},

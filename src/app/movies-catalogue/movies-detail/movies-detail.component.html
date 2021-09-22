@@ -7,11 +7,19 @@
                     <img  
                     class="img-thumbnail rounded"
                     [src]="movieDetails.imagePath"> 
-                    <button class="btn btn-success btn-block">Homepage</button>  
+                    <div class="p-2">
+                        <div class="d-flex flex-row">
+                            <p class="pr-2">{{movieDetails.lang}}</p>
+                            <p class="pr-2">&#8226;</p>
+                            <p>{{movieDetails.runtime}}</p>
+                        </div>
+
+
+                    </div>
                 </div> 
 
             </div>
-                <div class="p-2 col-xs-4" style="border: 1px solid salmon;">
+                <div class="p-2 col-xs-4">
                     <div class="d-flex flex-column align-items-stretch">
                         <div class="p-2 d-flex flex-row">
                             <mat-chip-list
@@ -57,6 +65,7 @@
                                     
                                 </div>
                             </div>
+                            
                         </div>
                         <div class="p-2">
                             <div class="row col-xs-12">
@@ -84,6 +93,12 @@
                         <div class="p-2">
                             {{movieDetails.popularity}}&#47;10
                         </div>
+                        <div class="p-2">
+                            <mat-icon style="color: blue; transform: scale(1.5);">thumb_up</mat-icon>
+                        </div>
+                        <div class="p-2">
+                            {{movieDetails.voteCount}}&#47;10
+                        </div>
                     </div>
                 </div>
         </div>  
@@ -93,9 +108,9 @@
             <div class="p-2">
                 <h3>Main Cast</h3>
             </div>
-            <div style="border: 1px solid red;"
+            <div 
             class="row">
-                <div class="col-sm-3"
+                <div class="col-xs-3"
                 *ngFor="let castMem of cast_members;">
                         <div >
                             <div class="d-flex flex-row align-items-center">
@@ -155,6 +170,12 @@
                             </div>
                           </div>
                     </div>
+                </div>
+            </div>
+            
+            <div class="p-2" *ngIf="empty">
+                <div class="card w-100">
+                    <p>There is no reviews for this movie</p>
                 </div>
             </div>
         </div>
