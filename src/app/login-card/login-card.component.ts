@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute, CanActivate, Router, UrlTree } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import {  Router } from '@angular/router';
+import {  Subscription } from 'rxjs';
 import { User } from '../user.model';
 import { UserService } from '../users.service';
 
@@ -10,48 +11,53 @@ import { UserService } from '../users.service';
   templateUrl: './login-card.component.html',
   styleUrls: ['./login-card.component.css']
 })
-export class LoginCardComponent implements OnInit,CanActivate{
+export class LoginCardComponent implements OnInit{
   @ViewChild('f',{static:true}) loginForm!:NgForm;
-  loggedIn: boolean=false;
+  public loggedIn: boolean;
   private subscription:Subscription;
-  constructor(private router:Router, private route:ActivatedRoute,
-    private userService:UserService) { 
+  text:string;
+  constructor(private router:Router,
+    private userService:UserService,private _snackBar: MatSnackBar) { 
+      this.loggedIn = false;
     
   }
   ngOnInit(){
-    this.subscription = this.userService.loggedInChanged.subscribe((m)=>{
-      this.loggedIn = m;
-    });
+    // this.userService.loggedInChanged.subscribe(m=>{
+    //   this.loggedIn = m;
+    // });
+    
     
   }
-  canActivate():
-  boolean|UrlTree|Promise<boolean|UrlTree>|Observable<boolean|UrlTree>{
-    if(this.loggedIn)
-      return true;
-    return false;
-  }
   onSubmit(){
-    const user = new User(this.loginForm.form.value.userData.email,this.loginForm.form.value.userData.password);
-    this.userService.login(user);
-    if(this.loggedIn){
-      this.router.navigate(['movies'],{relativeTo:this.route});
+    if(!this.loginForm.form.valid){
+      this._snackBar.open("Please enter your email or password","close",
+      {
+        panelClass:['warning']
+      });
+    }
+    else{
+      const user = new User(this.loginForm.form.value.userData.email,this.loginForm.form.value.userData.password);
+      this.loggedIn = this.userService.login(user);
+      if(this.loggedIn){
+        this.router.navigate(['movies']);
+        this._snackBar.open("LoggedIn successfully","",{
+          duration:2000,
+          panelClass:['success']
+        })
+      }
+      else{
+        this._snackBar.open("User doesn't exits!!!","close",{
+          panelClass:['warning']
+        });
+      }
     }
    
     
     
-    // if(this.userService.login(user))
-    // {
-      // console.log("Exists!!!");
-
-      // this.router.navigate(['movies'],{relativeTo:this.route});
-    // }
-    // else{
-      // console.log('it does not exist!!!');
-      // this.router.navigate(['error'],{relativeTo:this.route});
-    // }
     
   }
   onSuggest(){
+    
     const newUser = this.userService.getRandomUser();
     this.loginForm.setValue({
       userData:{
@@ -59,7 +65,6 @@ export class LoginCardComponent implements OnInit,CanActivate{
         password:newUser.password
       }
     });
-
   }
   // ngOnDestroy(){
   //   this.subscription.unsubscribe();

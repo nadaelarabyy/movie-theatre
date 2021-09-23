@@ -9,11 +9,12 @@ import {
   import { Observable } from 'rxjs';
   import { map, take } from 'rxjs/operators';
 import { UserService } from './users.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
   
   
   @Injectable({ providedIn: 'root' })
   export class AuthGuard implements CanActivate {
-    constructor(private authService:UserService, private router: Router){}
+    constructor(private authService:UserService, private router: Router,private _matSnack:MatSnackBar){}
     canActivate():boolean|UrlTree|Promise<boolean|UrlTree>|Observable<boolean|UrlTree>{
     return this.authService.loggedInChanged.pipe(
           take(1),
@@ -22,7 +23,12 @@ import { UserService } from './users.service';
             if (isAuth) {
               return true;
             }
-            return  this.router.createUrlTree(['/error']);;
+            this._matSnack.open("User Not logged In or Session Expired!!","",{
+              duration:2000,
+              panelClass:["warning2"]
+            });
+            return  this.router.createUrlTree(['/']);;
+            // return false;
           })
         );
     }

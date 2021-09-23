@@ -1,12 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component';
+import { RouterTestingModule } from '@angular/router/testing';
+
+
 
 describe('AppComponent', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
+      imports:[RouterTestingModule],
       declarations: [
-        AppComponent
+        AppComponent,
+        HeaderComponent,
+        FooterComponent
       ],
+      providers: []
+
     }).compileComponents();
   });
 
@@ -22,10 +32,5 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('movie-theatre');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('movie-theatre app is running!');
-  });
 });
+

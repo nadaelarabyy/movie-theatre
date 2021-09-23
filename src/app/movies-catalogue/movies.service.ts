@@ -3,15 +3,16 @@ import { Injectable } from "@angular/core";
 import { CastMember, Movie, Review } from "./movie.model";
 import { map } from 'rxjs/operators';
 
+
 @Injectable()
 export class MoviesService{
     protected API_KEY="8c6f102e3e869d116008630637634ce3";
     topRatedMovies:Movie[]=[];
     constructor(private http:HttpClient){}
     onFetchTopRatedMovies(){
-        return this.http.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${this.API_KEY}`)
-        .pipe(map(responseData=>{
-            const moviesArray=[];
+    const moviesArray=[];
+    return this.http.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${this.API_KEY}`)
+    .pipe(map(responseData=>{
             if(responseData.hasOwnProperty('results')){
                 for(let movie of responseData['results']){
                     const movieModel = new Movie(movie['id'],movie['adult'],[],'',

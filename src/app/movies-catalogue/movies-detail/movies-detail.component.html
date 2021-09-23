@@ -9,9 +9,9 @@
                     [src]="movieDetails.imagePath"> 
                     <div class="p-2">
                         <div class="d-flex flex-row">
-                            <p class="pr-2">{{movieDetails.lang}}</p>
+                            <p class="pr-2"><strong>{{movieDetails.lang | uppercase}}</strong></p>
                             <p class="pr-2">&#8226;</p>
-                            <p>{{movieDetails.runtime}}</p>
+                            <p>{{movieDetails.runtime | convertRuntime}}</p>
                         </div>
 
 
@@ -76,7 +76,7 @@
                                 <div 
                                 class="p-2 col-xs-8 align-self-center">
                                     <div class="d-flex flex-row">
-                                        <div class="p-2">{{director}}</div>
+                                        <div id="director" class="p-2">{{director}}</div>
                                     </div>
                                     
                                 </div>
@@ -116,9 +116,9 @@
                             <div class="d-flex flex-row align-items-center">
 
                                 <div class="p-2">
-                                    <img [src]="castMem.image" alt="Avatar" class="avatar">
+                                    <img [src]="castMem.image" [alt]="castMem.name+' avatar'" class="avatar">
                                 </div>
-                                <div class="p-1 d-flex flex-column align-items-center">
+                                <div class="p-2 d-flex flex-column align-items-center">
                                     <h5 >{{castMem.name}}</h5>
                                     <p>{{castMem.movieName}}</p>
                                 </div>
@@ -141,7 +141,7 @@
                 <div class="col-xs-2"
                 *ngFor="let movieRecommend of recommendations;">
                 <div class="p-2">
-                    <app-movies-item [movie]="movieRecommend"></app-movies-item>
+                    <app-movies-item id="movieItem" [movie]="movieRecommend"></app-movies-item>
                 </div>
                         
                     </div>
@@ -160,14 +160,25 @@
                     <div class="p-2">
                         <div class="card w-75">
                             <div class="pt-4 pl-3 d-flex flex-row">
-                                <h5 class="pr-2">{{review.author}}</h5>
+                                <h5 class="pr-2" id="reviewerName">{{review.author}}</h5>
                                 <p class="pr-2"><strong>&#8226;</strong></p>
-                                <p class="pr-2">{{review.dateIssued}}</p>
+                                <p class="pr-2">{{review.dateIssued | date:'medium'}}</p>
 
                             </div>
                             <div class="card-body">
-                                {{review.content}}
+                                <p>
+                                    {{review.content.length>800 && !toggled?(review.content|shorten):review.content}}
+                                    <button 
+                                    type="button" 
+                                    class="btn btn-link"
+                                    *ngIf="review.content.length>800"
+                                    (click)="toggled=!toggled">
+                                        Read {{toggled?'less':'more'}}
+                                    </button>
+                                </p>
+                                
                             </div>
+                            
                           </div>
                     </div>
                 </div>

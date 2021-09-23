@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {MatIconModule} from '@angular/material/icon';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -19,8 +20,9 @@ import { MoviesService } from './movies-catalogue/movies.service';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './auth-gurad.service';
+import { ShortenPipe, TransformPipe } from './transform-pipe.pipe';
 
-const appRoutes:Routes=[
+export const appRoutes:Routes=[
   {path:'',component:LoginCardComponent,pathMatch:'full'},
   {path:'movies',component:MoviesCatalogueComponent
   ,canActivate:[AuthGuard]
@@ -40,7 +42,9 @@ const appRoutes:Routes=[
     MoviesItemComponent,
     MoviesDetailComponent,
     FooterComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    TransformPipe,
+    ShortenPipe
   ],
   imports: [
     BrowserModule,
@@ -48,6 +52,7 @@ const appRoutes:Routes=[
     BrowserAnimationsModule,
     MatChipsModule,
     MatIconModule,
+    MatSnackBarModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule
 
