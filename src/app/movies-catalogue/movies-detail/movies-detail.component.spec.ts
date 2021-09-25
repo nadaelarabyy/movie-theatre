@@ -62,7 +62,7 @@ describe('MovieDetailComponeny',()=>{
         
         movieServiceSpy.onFetchCastAndDirector.and.returnValue(of(cast));
         // -----------------------------------------------------------------------------------
-        let reviews:Review[] = [new Review("some message","nada",new Date())];
+        let reviews:Review[] = [new Review("some message","nada",new Date(),false)];
         movieServiceSpy.onFetchMovieReviews.and.returnValue(of(reviews));
         fixture.detectChanges();
         tick();
