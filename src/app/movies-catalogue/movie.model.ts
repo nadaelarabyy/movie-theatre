@@ -37,10 +37,12 @@ export class Review{
     public content:string;
     public author:string;
     public dateIssued:Date;
-    constructor(content:string,author:string,dateIssued:Date){
+    public show:boolean;
+    constructor(content:string,author:string,dateIssued:Date,show:boolean){
         this.content=content;
         this.author=author;
         this.dateIssued=dateIssued;
+        this.show = show;
     }
 }
 export class CastMember{

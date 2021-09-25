@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import {MatIconModule} from '@angular/material/icon';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -54,7 +55,8 @@ export const appRoutes:Routes=[
     MatIconModule,
     MatSnackBarModule,
     RouterModule.forRoot(appRoutes),
-    HttpClientModule
+    HttpClientModule,
+    MatProgressSpinnerModule
 
   ],
   providers: [UserService,MoviesService],

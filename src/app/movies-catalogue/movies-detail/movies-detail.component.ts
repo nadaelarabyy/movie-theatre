@@ -21,6 +21,8 @@ export class MoviesDetailComponent implements OnInit {
   public recommendations:Movie[]=[];
   public empty:boolean=false;
   public toggled:boolean=false;
+  public isFetching = true;
+  public recommendMore = false;
   constructor(private userService:UserService,
     private movService:MoviesService,
     private router:Router,
@@ -59,6 +61,7 @@ export class MoviesDetailComponent implements OnInit {
       });
       this.movService.onFetchMovieReviews(routeParams.id).subscribe((list)=>{
         this.reviews = list;
+        this.isFetching = false;
         // console.log(this.reviews);
         if(this.reviews.length==0)
           this.empty=true;
@@ -76,5 +79,9 @@ export class MoviesDetailComponent implements OnInit {
 getMin(x:number,y:number){
   return x>=y?y:x;
 }
-
+toggle(index:number){
+  console.log(index);
+  this.toggled=!this.toggled;
+  
+}
 }

@@ -11,6 +11,7 @@ import { MoviesService } from '../movies.service';
 })
 export class MoviesListComponent implements OnInit {
    public movieList:Movie[];
+   public isFetching:boolean=true;
 
   constructor(private movService:MoviesService,
     private _snackbar:MatSnackBar) {}
@@ -18,6 +19,7 @@ export class MoviesListComponent implements OnInit {
   ngOnInit(): void {
     this.movService.onFetchTopRatedMovies().subscribe(movies=>{
       this.movieList = movies;
+      this.isFetching=false;
           
   },error=>{
     this._snackbar.open(error["status_message"],"",{

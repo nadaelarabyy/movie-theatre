@@ -1,5 +1,7 @@
+<mat-spinner *ngIf="isFetching"></mat-spinner>
 <div 
-class="d-flex justify-content-center flex-wrap">
+class="d-flex justify-content-center flex-wrap"
+*ngIf="!isFetching">
         <div class="p-2" *ngFor="let movie of movieList;">
             <app-movies-item id="item" [movie]="movie"></app-movies-item>
         </div>

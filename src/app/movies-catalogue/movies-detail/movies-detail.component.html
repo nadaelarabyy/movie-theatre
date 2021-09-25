@@ -1,4 +1,6 @@
-<div class="container-fluid">
+<mat-spinner *ngIf="isFetching"></mat-spinner>
+
+<div class="container-fluid" style="overflow: hidden;" *ngIf="!isFetching">
     <h2>{{movieDetails.title}}</h2>
     <div class="row">
         <div class="d-flex">
@@ -112,16 +114,18 @@
             class="row">
                 <div class="col-xs-3"
                 *ngFor="let castMem of cast_members;">
-                        <div >
-                            <div class="d-flex flex-row align-items-center">
+                        <div style="width: 500px;">
+                            <div class="d-flex flex-row align-items-start">
 
-                                <div class="p-2">
-                                    <img [src]="castMem.image" [alt]="castMem.name+' avatar'" class="avatar">
-                                </div>
-                                <div class="p-2 d-flex flex-column align-items-center">
-                                    <h5 >{{castMem.name}}</h5>
-                                    <p>{{castMem.movieName}}</p>
-                                </div>
+                                    <div class="p-2">
+                                        <img [src]="castMem.image" [alt]="castMem.name+' avatar'" class="avatar">
+                                    </div>
+                                    
+                                    <div 
+                                    class="p-2 d-flex flex-column align-items-start">
+                                        <h5 >{{castMem.name}}</h5>
+                                        <p >{{castMem.movieName}}</p>
+                                    </div>
                             </div>
                         </div>
                         
@@ -131,14 +135,15 @@
         </div>
         
     </div>
-
-    <div class="row">
+<!-- ================================================================================ -->
+    <!-- <div class="row">
         <div class="col-xs-12 d-flex flex-column">
             <div class="p-2">
                 <h3>Recommendations</h3>
             </div>
-            <div class="row">
+            <div class="row" style="border: 1px solid yellow;">
                 <div class="col-xs-2"
+                style="border: 1px solid salmon ; padding-right: 2px; overflow: hidden;"
                 *ngFor="let movieRecommend of recommendations;">
                 <div class="p-2">
                     <app-movies-item id="movieItem" [movie]="movieRecommend"></app-movies-item>
@@ -149,14 +154,41 @@
                 
         </div>
         
+    </div> -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="p-2">
+                <h3>Recommendations</h3>
+            </div>
+            <div 
+            [ngClass]="recommendMore?'d-flex flex-wrap':'d-flex flex-nowrap'">
+                <div class="p-2"
+                    *ngFor="let movieRecommend of recommendations;">
+                        <div class="p-2">
+                            <app-movies-item id="movieItem" [movie]="movieRecommend"></app-movies-item>
+                        </div>
+                                
+                            </div>
+                            
+                            
+                        </div>
+                        <button 
+                        type="button" 
+                        class="btn btn-link" 
+                        (click)="recommendMore=!recommendMore">
+                            View {{recommendMore?'Less':'More'}}
+                        </button>
+        </div>
+
     </div>
+    <!-- ================================================================================= -->
     <div class="row">
         <div class="d-flex flex-column">
             <div class="p-2">
                 <h3>Viewers Reviews</h3>
             </div>
             <div class="p-2">
-                <div class="d-flex flex-column" *ngFor="let review of reviews;">
+                <div class="d-flex flex-column" *ngFor="let review of reviews; let i = index;">
                     <div class="p-2">
                         <div class="card w-75">
                             <div class="pt-4 pl-3 d-flex flex-row">
@@ -167,13 +199,13 @@
                             </div>
                             <div class="card-body">
                                 <p>
-                                    {{review.content.length>800 && !toggled?(review.content|shorten):review.content}}
+                                    {{review.content.length>800 && !review.show?(review.content|shorten):review.content}}
                                     <button 
                                     type="button" 
                                     class="btn btn-link"
                                     *ngIf="review.content.length>800"
-                                    (click)="toggled=!toggled">
-                                        Read {{toggled?'less':'more'}}
+                                    (click)="review.show=!review.show">
+                                        Read {{review.show?'less':'more'}}
                                     </button>
                                 </p>
                                 
@@ -184,7 +216,7 @@
                 </div>
             </div>
             
-            <div class="p-2" *ngIf="empty">
+            <div class="p-2" *ngIf="reviews.length==0">
                 <div class="card w-100">
                     <p>There is no reviews for this movie</p>
                 </div>
