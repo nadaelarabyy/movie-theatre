@@ -19,7 +19,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     return this.authService.loggedInChanged.pipe(
           take(1),
           map(user => {
-            const isAuth = !!user;
+            const isAuth = localStorage.getItem('loggedIn');
             if (isAuth) {
               return true;
             }
@@ -27,7 +27,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
               duration:2000,
               panelClass:["warning2"]
             });
-            return  this.router.createUrlTree(['/']);;
+            return  this.router.createUrlTree(['/login']);
             // return false;
           })
         );

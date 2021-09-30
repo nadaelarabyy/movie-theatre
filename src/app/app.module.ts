@@ -31,7 +31,7 @@ import { FilterPipe, ShortenPipe, TransformPipe } from './transform-pipe.pipe';
 import { MoviesTopListComponent } from './movies-catalogue/movies-top-list/movies-top-list.component';
 
 export const appRoutes:Routes=[
-  {path:'',component:LoginCardComponent,pathMatch:'full'},
+  {path:'',redirectTo:'/movies',pathMatch:'full'},
   {path:'movies',component:MoviesCatalogueComponent
   ,canActivate:[AuthGuard]
   ,children:[
@@ -39,6 +39,7 @@ export const appRoutes:Routes=[
     {path:'topRated',component:MoviesTopListComponent},
     {path:':id',component:MoviesDetailComponent},
   ]},
+  {path:'login',component:LoginCardComponent},
   {path:'error',component:ErrorPageComponent}
 ];
 @NgModule({

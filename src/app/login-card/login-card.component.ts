@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {  Router } from '@angular/router';
+import {  ActivatedRoute, Router } from '@angular/router';
 import {  Subscription } from 'rxjs';
 import { User } from '../user.model';
 import { UserService } from '../users.service';
@@ -16,17 +16,16 @@ export class LoginCardComponent implements OnInit{
   public loggedIn: boolean;
   private subscription:Subscription;
   text:string;
-  constructor(private router:Router,
+  constructor(private router:Router,private route:ActivatedRoute,
     private userService:UserService,private _snackBar: MatSnackBar) { 
-      this.loggedIn = false;
-    
+      if(localStorage.getItem('loggedIn')==="true"){
+      
+        this.router.navigate(['movies']);
+      }       
   }
-  ngOnInit(){
-    // this.userService.loggedInChanged.subscribe(m=>{
-    //   this.loggedIn = m;
-    // });
+  ngOnInit(){ 
     
-    
+         
   }
   onSubmit(){
     if(!this.loginForm.form.valid){
@@ -37,6 +36,7 @@ export class LoginCardComponent implements OnInit{
     }
     else{
       const user = new User(this.loginForm.form.value.userData.email,this.loginForm.form.value.userData.password);
+      
       this.loggedIn = this.userService.login(user);
       if(this.loggedIn){
         this.router.navigate(['movies']);

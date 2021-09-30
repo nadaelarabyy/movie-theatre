@@ -17,11 +17,12 @@ export class UserService{
     login(user:User){
         for(let user1 of this.users){
             if(user.email === user1.email && user.password === user1.password){
-                
+                localStorage.setItem('loggedIn',"true");
                  this.loggedInChanged.next(true);
                  return true;
             }
         }
+        localStorage.setItem('loggedIn',"false");
         this.loggedInChanged.next(null);
         return false;
     }
@@ -33,6 +34,10 @@ export class UserService{
     getVal(){
         return this.loggedInChanged.next(true);
         }
+    logout(){
+        localStorage.removeItem('loggedIn');
+        this.loggedInChanged.next(null);
+    }
     
     
 
