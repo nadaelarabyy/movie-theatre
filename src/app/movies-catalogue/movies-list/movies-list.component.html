@@ -1,8 +1,112 @@
 <mat-spinner *ngIf="isFetching"></mat-spinner>
-<div 
-class="d-flex justify-content-center flex-wrap"
-*ngIf="!isFetching">
-        <div class="p-2" *ngFor="let movie of movieList;">
-            <app-movies-item id="item" [movie]="movie"></app-movies-item>
+<div class="container" *ngIf="!isFetching">
+    <div class="row" id="moviesIntro">
+        <div class="d-flex flex-column">
+            <mat-card style="width: 100%;">
+                <h2>Movies</h2>
+                <hr>
+                <h5 style="width: 70%; font-family: cursive;">
+                    Movies move us like nothing else can, whether they’re scary, funny, 
+                    dramatic, romantic or anywhere in-between. So many titles, so much to 
+                    experience.
+                </h5>
+
+            </mat-card>
+            <br>
+
         </div>
-  </div>
+    </div>
+    <div class="row" id="nowPlaying">
+        <h2>
+            Now Playing
+            <i class="fas fa-play p-2"></i>
+            <hr>
+        </h2>
+        <!-- =============================================================== -->
+                <mdb-carousel 
+                [isControls]="true" 
+                class="carousel-multi-item multi-animation" 
+                [type]="'carousel-multi-item'"
+                [animation]="'slide'">
+        <mdb-carousel-item *ngFor="let item of slides3; let i = index">
+            <div class="col-md-3" *ngFor="let card of item; let cardIndex = index">
+                <app-movies-item id="item3" [movie]="card"></app-movies-item>
+                <br><br>
+            </div>
+        </mdb-carousel-item>
+        </mdb-carousel>
+        <!-- ------------------------------------------------------------------------------- -->
+    </div>
+    <div class="row" id="topRated">
+        <h2>
+            Top Rated Movies 
+            <button type="button" class="btn btn-dark btn-sm" (click)="onViewMore()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+
+            <hr>
+        </h2>
+        <!-- =============================================================== -->
+                <mdb-carousel 
+                [isControls]="true" 
+                class="carousel-multi-item multi-animation" 
+                [type]="'carousel-multi-item'"
+                [animation]="'slide'">
+        <mdb-carousel-item *ngFor="let item of slides; let i = index">
+            <div class="col-md-3" *ngFor="let card of item; let cardIndex = index">
+                <app-movies-item id="item1" [movie]="card"></app-movies-item>
+                <br><br>
+            </div>
+        </mdb-carousel-item>
+        </mdb-carousel>
+        <!-- ------------------------------------------------------------------------------- -->
+        <!-- <div 
+        class="d-flex justify-content-center flex-wrap"
+        *ngIf="!isFetching">
+                <div class="p-2" *ngFor="let movie of movieList;">
+                    <app-movies-item id="item" [movie]="movie"></app-movies-item>
+                </div>
+          </div> -->
+          <!-- --------------------------------------------- -->
+    </div>
+    
+    <div class="row" id="popular">
+        <h2>
+            Popular Movies 
+            <hr>
+        </h2>
+        <mdb-carousel 
+                [isControls]="true" 
+                class="carousel-multi-item multi-animation" 
+                [type]="'carousel-multi-item'"
+                [animation]="'slide'">
+        <mdb-carousel-item *ngFor="let item of slides2; let i = index">
+            <div class="col-md-3" *ngFor="let card of item; let cardIndex = index">
+                <app-movies-item id="item2" [movie]="card"></app-movies-item>
+                <br><br>
+            </div>
+        </mdb-carousel-item>
+        </mdb-carousel>
+
+    </div>
+    <div class="row" id="upcoming">
+        <h2>
+            Upcoming Movies 
+            <hr>
+        </h2>
+        <mdb-carousel 
+                [isControls]="true" 
+                class="carousel-multi-item multi-animation" 
+                [type]="'carousel-multi-item'"
+                [animation]="'slide'">
+        <mdb-carousel-item *ngFor="let item of slides4; let i = index">
+            <div class="col-md-3" *ngFor="let card of item; let cardIndex = index">
+                <app-movies-item id="item4" [movie]="card"></app-movies-item>
+                <br><br>
+            </div>
+        </mdb-carousel-item>
+        </mdb-carousel>
+
+    </div>
+
+</div>

@@ -1,7 +1,7 @@
 export class Movie{
     public id:number;
     public adult:boolean;
-    public genres:{id:number,name:string}[];
+    public genres:any[];
     public homepage:string;
     public lang:string;
     public title:string;
@@ -13,7 +13,7 @@ export class Movie{
     public imagePath:string;
     public production:string[];
     
-    constructor(id:number,adult:boolean, genres:{id:number,name:string}[], homepage:string, lang:string,
+    constructor(id:number,adult:boolean, genres:any[], homepage:string, lang:string,
          title:string, overview:string, releaseDate:Date,voteCount:number, popularity:number,runtime:number,
          imagePath:string,production:string[])
          {

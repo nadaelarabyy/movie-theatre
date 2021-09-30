@@ -23,6 +23,8 @@ export class MoviesDetailComponent implements OnInit {
   public toggled:boolean=false;
   public isFetching = true;
   public recommendMore = false;
+  slides: any = [[]];
+
   constructor(private userService:UserService,
     private movService:MoviesService,
     private router:Router,
@@ -53,6 +55,8 @@ export class MoviesDetailComponent implements OnInit {
       });
       this.movService.onFetchRecommendations(routeParams.id).subscribe((list)=>{
         this.recommendations = list.slice();
+        this.slides = this.chunk(this.recommendations,4);
+
       },error=>{
         this._snackbar.open(error["status_message"],"",{
           duration:2500,
@@ -83,5 +87,12 @@ toggle(index:number){
   console.log(index);
   this.toggled=!this.toggled;
   
+}
+chunk(arr, chunkSize) {
+  let R = [];
+  for (let i = 0, len = arr.length; i < len; i += chunkSize) {
+    R.push(arr.slice(i, i + chunkSize));
+  }
+  return R;
 }
 }

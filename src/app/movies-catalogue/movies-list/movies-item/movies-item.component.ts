@@ -10,19 +10,27 @@ import { Movie } from '../../movie.model';
 })
 export class MoviesItemComponent implements OnInit {
   @Input() movie:Movie;
+  @Input() direction:string;
   constructor(private userService:UserService,private router:Router,private route:ActivatedRoute) { 
   }
 
   ngOnInit(): void {
   }
   onViewDetails(id:number){
-    if(this.route.snapshot.params['id']!==undefined){
-      // console.log('hello');
+    if(this.direction === "top"){
       this.router.navigate(['../',id],{relativeTo:this.route});
 
     }
     else{
-      this.router.navigate([id],{relativeTo:this.route});
+      
+      if(this.route.snapshot.params['id']!==undefined){
+        // console.log('hello');
+        this.router.navigate(['../',id],{relativeTo:this.route});
+  
+      }
+      else{
+        this.router.navigate([id],{relativeTo:this.route});
+      }
     }
     
   }

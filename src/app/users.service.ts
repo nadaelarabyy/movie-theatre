@@ -26,7 +26,6 @@ export class UserService{
         return false;
     }
     getRandomUser():User{
-        console.log("555");
         const rand = Math.floor(Math.random() * this.users.length);
         const user = this.users[rand];
         return new User(user.email,user.password);

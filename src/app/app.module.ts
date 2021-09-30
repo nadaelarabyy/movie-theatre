@@ -4,6 +4,12 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatCardModule} from '@angular/material/card';
+// ----------------------------------------------
+import { CarouselModule, MDBBootstrapModule, WavesModule } from 'angular-bootstrap-md';
+import {MatPaginatorModule} from '@angular/material/paginator';
+
+// ------------------------------------------------
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -21,7 +27,8 @@ import { MoviesService } from './movies-catalogue/movies.service';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './auth-gurad.service';
-import { ShortenPipe, TransformPipe } from './transform-pipe.pipe';
+import { FilterPipe, ShortenPipe, TransformPipe } from './transform-pipe.pipe';
+import { MoviesTopListComponent } from './movies-catalogue/movies-top-list/movies-top-list.component';
 
 export const appRoutes:Routes=[
   {path:'',component:LoginCardComponent,pathMatch:'full'},
@@ -29,6 +36,7 @@ export const appRoutes:Routes=[
   ,canActivate:[AuthGuard]
   ,children:[
     {path:'',component:MoviesListComponent},
+    {path:'topRated',component:MoviesTopListComponent},
     {path:':id',component:MoviesDetailComponent},
   ]},
   {path:'error',component:ErrorPageComponent}
@@ -45,7 +53,9 @@ export const appRoutes:Routes=[
     FooterComponent,
     ErrorPageComponent,
     TransformPipe,
-    ShortenPipe
+    ShortenPipe,
+    FilterPipe,
+    MoviesTopListComponent
   ],
   imports: [
     BrowserModule,
@@ -56,8 +66,11 @@ export const appRoutes:Routes=[
     MatSnackBarModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule,
-    MatProgressSpinnerModule
-
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MDBBootstrapModule.forRoot(),
+    CarouselModule, WavesModule,
+    MatPaginatorModule
   ],
   providers: [UserService,MoviesService],
   bootstrap: [AppComponent]

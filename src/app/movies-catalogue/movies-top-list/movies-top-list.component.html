@@ -1,0 +1,46 @@
+<mat-spinner *ngIf="isFetching"></mat-spinner>
+
+<div class="container" *ngIf="!isFetching">
+    <div class="row">
+        <div class="col-xs-2">
+            <label for="Genre">Filter By Genre:</label>
+        </div>
+        <div class="col-xs-6">
+            <!-- <input type="text" name="Genre" id="Genre"> -->
+            <select 
+            class="form-select" 
+            aria-label="Select a genre!!!"
+            [(ngModel)]="genreSelected">
+                <option selected>None</option>
+                <option *ngFor="let g of genres" [value]="g['id']" >{{g["name"]}}</option>
+              </select>
+        </div>
+        <div class="col-xs-4">
+            <br><br>
+        </div>
+    </div>
+    <div class="row">
+        <h2>
+            Top Rated Movies
+            <hr>
+        </h2>
+    </div>
+    <div class="row">
+        <div 
+        class="d-flex justify-content-center flex-wrap"
+        *ngIf="!isFetching">
+                <div class="p-2" *ngFor="let movie of moviesArray|filter:genreSelected;">
+                    <app-movies-item id="item" [movie]="movie" [direction]="'top'"></app-movies-item>
+                </div>
+          </div> 
+    </div>
+    <div class="row">
+        
+        <mat-paginator 
+        [length]="totalResults" 
+        [pageSize]="defaultRecords" 
+        [pageSizeOptions]="[5, 10, 20]" 
+        (page)="pageEvent = $event; onPaginateChange($event)">
+        </mat-paginator>
+    </div>
+</div>

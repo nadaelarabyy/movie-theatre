@@ -135,49 +135,24 @@
         </div>
         
     </div>
-<!-- ================================================================================ -->
-    <!-- <div class="row">
-        <div class="col-xs-12 d-flex flex-column">
-            <div class="p-2">
-                <h3>Recommendations</h3>
-            </div>
-            <div class="row" style="border: 1px solid yellow;">
-                <div class="col-xs-2"
-                style="border: 1px solid salmon ; padding-right: 2px; overflow: hidden;"
-                *ngFor="let movieRecommend of recommendations;">
-                <div class="p-2">
-                    <app-movies-item id="movieItem" [movie]="movieRecommend"></app-movies-item>
-                </div>
-                        
-                    </div>
-            </div>
-                
-        </div>
-        
-    </div> -->
     <div class="row">
         <div class="col-xs-12">
             <div class="p-2">
                 <h3>Recommendations</h3>
             </div>
-            <div 
-            [ngClass]="recommendMore?'d-flex flex-wrap':'d-flex flex-nowrap'">
-                <div class="p-2"
-                    *ngFor="let movieRecommend of recommendations;">
-                        <div class="p-2">
-                            <app-movies-item id="movieItem" [movie]="movieRecommend"></app-movies-item>
-                        </div>
-                                
-                            </div>
-                            
-                            
-                        </div>
-                        <button 
-                        type="button" 
-                        class="btn btn-link" 
-                        (click)="recommendMore=!recommendMore">
-                            View {{recommendMore?'Less':'More'}}
-                        </button>
+            <mdb-carousel 
+                [isControls]="true" 
+                class="carousel-multi-item multi-animation" 
+                [type]="'carousel-multi-item'"
+                [animation]="'slide'">
+        <mdb-carousel-item *ngFor="let item of slides; let i = index">
+            <div class="col-md-3" *ngFor="let card of item; let cardIndex = index">
+                <app-movies-item id="movieItem" [movie]="card"></app-movies-item>
+                <br><br>
+            </div>
+        </mdb-carousel-item>
+        </mdb-carousel>
+            
         </div>
 
     </div>
