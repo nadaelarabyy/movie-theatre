@@ -33,7 +33,8 @@ export class MoviesService {
     onFetchMovieById(movie_id: number) {
         return this.http.get(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${this.API_KEY}&language=en-US`)
             .pipe(map((responseData => {
-                let poster_path: string = responseData['poster_path'] == null ? "https://www.pngfind.com/pngs/m/554-5541387_null-poster-hd-png-download.png" : `http://image.tmdb.org/t/p/w342${responseData['poster_path']}`;
+                let poster_path: string = responseData['poster_path'] == null ? "https://www.pngfind.com/pngs/m/554-5541387_null-poster-hd-png-download.png" : 
+                `http://image.tmdb.org/t/p/w342${responseData['poster_path']}`;
                 const movieDetails = new Movie(responseData['id'], responseData['adult'], responseData['genres'],
                     responseData['homepage'], responseData['original_language'], responseData['title'], responseData['overview'],
                     new Date(responseData['release_date']), responseData['vote_count'], responseData['vote_average'],
