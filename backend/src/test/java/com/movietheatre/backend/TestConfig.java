@@ -6,6 +6,7 @@ import com.movietheatre.backend.service.UserService;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -22,6 +23,7 @@ public class TestConfig {
     return new MyUserDetailService(userService);
   }
   @Bean
+  @Primary
   BCryptPasswordEncoder passwordEncoderTest(){
     return new BCryptPasswordEncoder();
   }

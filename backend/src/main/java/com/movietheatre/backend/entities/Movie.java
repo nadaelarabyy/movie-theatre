@@ -2,6 +2,8 @@ package com.movietheatre.backend.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
+import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +21,8 @@ public class Movie {
   private int likes;
   private String director;
   private String imagePath;
+  private Date releaseDate;
+  private String source;
   @ManyToMany(mappedBy = "movies", fetch=FetchType.EAGER)
   private Set<Genre> genres;
   @ManyToMany(mappedBy = "movies",fetch = FetchType.LAZY)
@@ -45,7 +49,7 @@ public class Movie {
   public Movie(String title, String language, int movieLength, String description, double rating,
                int likes, String director, String imagePath, Set<Genre> genres,
                Set<ProductionCompany> productionCompanyList, Set<Cast> cast, Set<Review> reviews,
-               int inappropriate, boolean shown,Set<User> users) {
+               int inappropriate, boolean shown,Set<User> users,Date releaseDate,String source) {
     this.title = title;
     this.language = language;
     this.movieLength = movieLength;
@@ -61,12 +65,14 @@ public class Movie {
     this.inappropriate = inappropriate;
     this.shown = shown;
     this.users = users;
+    this.releaseDate = releaseDate;
+    this.source = source;
   }
 
   public Movie(Long id, String title, String language, int movieLength, String description,
                double rating, int likes, String director, String imagePath, Set<Genre> genres,
                Set<ProductionCompany> productionCompanyList, Set<Cast> cast, Set<Review> reviews,
-               int inappropriate, boolean shown,Set<User> users) {
+               int inappropriate, boolean shown,Set<User> users,Date releaseDate,String source) {
     this.movieId = id;
     this.title = title;
     this.language = language;
@@ -83,6 +89,8 @@ public class Movie {
     this.inappropriate = inappropriate;
     this.shown = shown;
     this.users = users;
+    this.releaseDate = releaseDate;
+    this.source = source;
   }
 
   public Long getId() {
@@ -219,6 +227,22 @@ public class Movie {
 
   public void setUsers(Set<User> users) {
     this.users = users;
+  }
+
+  public Date getReleaseDate() {
+    return releaseDate;
+  }
+
+  public void setReleaseDate(Date releaseDate) {
+    this.releaseDate = releaseDate;
+  }
+
+  public String getSource() {
+    return source;
+  }
+
+  public void setSource(String source) {
+    this.source = source;
   }
 
   @Override

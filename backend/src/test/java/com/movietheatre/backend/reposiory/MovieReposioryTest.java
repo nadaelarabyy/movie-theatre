@@ -1,5 +1,6 @@
 package com.movietheatre.backend.reposiory;
 
+import com.movietheatre.backend.TestConfig;
 import com.movietheatre.backend.entities.*;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -7,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -16,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+@Import({TestConfig.class})
 class MovieReposioryTest {
   @Autowired
   private TestEntityManager entityManager;
@@ -88,7 +92,7 @@ class MovieReposioryTest {
     return new Movie(-1L, "mock title", "en", 90, "mock descritpion",
     2.2, 15, "mock director", "mock image path", new HashSet<>(),
       new HashSet<>(), new HashSet<>(), new HashSet<>(),
-    0, false,new HashSet<>());
+    0, false,new HashSet<>(),new Date(),"tmdb");
   }
 
 }

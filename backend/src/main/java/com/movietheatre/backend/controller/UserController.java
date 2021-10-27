@@ -6,6 +6,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movietheatre.backend.dto.FlagDTO;
+import com.movietheatre.backend.dto.MovieDTO;
+import com.movietheatre.backend.dto.MovieEditDTO;
 import com.movietheatre.backend.dto.RatingDTO;
 import com.movietheatre.backend.entities.Movie;
 import com.movietheatre.backend.entities.Rate;
@@ -14,22 +16,17 @@ import com.movietheatre.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
+
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -114,6 +111,20 @@ public class UserController {
         }
 
       }
+
+      @PostMapping(value = "/addmovie", produces = "application/json",consumes = "application/json")
+      public ResponseEntity<Movie> addMovieByAdmin(@RequestBody MovieDTO movieDTO) throws ParseException {
+        System.out.println("==>"+movieDTO);
+        Movie movie = userService.addNewMovie(movieDTO);
+        return new ResponseEntity<>(movie,HttpStatus.OK);
+      }
+      @PutMapping(value = "/editmovie",produces = "application/json",consumes = "application/json")
+      public ResponseEntity<Movie> editMovieByAdmin(@RequestBody MovieEditDTO movieEditDTO
+          ,@RequestParam(value = "id") Long id) throws ParseException {
+          Movie movie = userService.editMovie(id,movieEditDTO);
+          return new ResponseEntity<>(movie,HttpStatus.OK);
+      }
+
 
     @GetMapping("/logout")
   public String logout(HttpServletRequest request,HttpServletResponse response) {

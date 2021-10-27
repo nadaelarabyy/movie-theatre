@@ -1,9 +1,9 @@
 package com.movietheatre.backend.service;
 
-import com.movietheatre.backend.entities.Genre;
-import com.movietheatre.backend.entities.Movie;
-import com.movietheatre.backend.entities.ProductionCompany;
-import com.movietheatre.backend.entities.Review;
+import com.movietheatre.backend.dto.MovieDTO;
+import com.movietheatre.backend.dto.MovieEditDTO;
+import com.movietheatre.backend.entities.*;
+import com.movietheatre.backend.reposiory.GenreRepository;
 import com.movietheatre.backend.reposiory.MovieReposiory;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,15 +31,18 @@ public class MovieService {
   private final ProductionCompanyService productionCompanyService;
   private final CastService castService;
   private final ReviewService reviewService;
+  private final GenreRepository genreRepository;
   @Autowired
   public MovieService(MovieReposiory movieReposiory,
                       ProductionCompanyService productionCompanyService,
                       CastService castService,
-                      ReviewService reviewService) {
+                      ReviewService reviewService,
+                      GenreRepository genreRepository) {
     this.movieReposiory = movieReposiory;
     this.productionCompanyService = productionCompanyService;
     this.castService = castService;
     this.reviewService = reviewService;
+    this.genreRepository = genreRepository;
   }
   public List<Movie> getAllMovies(){
     return movieReposiory.findAll()
@@ -148,6 +154,49 @@ public class MovieService {
     return movieReposiory.findAll().stream()
       .filter(movie -> movie.getInappropriate()>10)
       .collect(Collectors.toList());
+  }
+
+  public Movie addMovieByAdmin(MovieDTO movie) throws ParseException {
+    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    Date releaseDate = format.parse(movie.getReleaseDate());
+
+    Movie movieToCreate = new Movie(movie.getId(), movie.getTitle(),movie.getLang(),
+    movie.getMovieLength(), movie.getDescription(),
+    movie.getRating(), movie.getLikes(), movie.getDirector(), movie.getImagePath(), new HashSet<>(),
+      new HashSet<>(), new HashSet<>(), new HashSet<>(),
+    0, false,new HashSet<>(),releaseDate,"admin");
+    Set<Genre> genresC = movie.getGenres().stream().map(genreDTO -> {
+      Genre genre = new Genre();
+      genre.setId(genreDTO.getId());
+      genre.setGenreName(genreDTO.getGenreName());
+      genre.setMovies(new HashSet<>());
+      return genre;
+    }).collect(Collectors.toSet());
+    movieToCreate.setGenres(genresC);
+    return movieReposiory.save(movieToCreate);
+  }
+  public Movie editMovie(Long id,MovieEditDTO movieEditDTO) throws ParseException {
+    Movie movie = movieReposiory.findById(id).orElse(null);
+    if(movieEditDTO.getLang()!=null){
+      movie.setLanguage(movieEditDTO.getLang());
+    }
+    if(movieEditDTO.getReleaseDate()!=null)
+    {
+      DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+      Date releaseDate = format.parse(movieEditDTO.getReleaseDate());
+      movie.setReleaseDate(releaseDate);
+    }
+    if(movieEditDTO.getGenres()!=null){
+      movieReposiory.deleteGenresByMovieId(id);
+      Set<Genre> genres = movieEditDTO.getGenres().stream().map(genreDTO -> {
+        Genre genreToGet = genreRepository.getById(genreDTO.getId());
+        genreToGet.getMovies().add(movie);
+        return genreToGet;
+      }).collect(Collectors.toSet());
+      movie.getGenres().clear();
+      movie.setGenres(genres);
+    }
+    return movieReposiory.saveAndFlush(movie);
   }
 
 

@@ -15,10 +15,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Configuration
 public class MovieConfig {
@@ -78,6 +78,9 @@ public class MovieConfig {
       try {
         JSONObject movieObj = movieArr.getJSONObject(i);
         Long movieId = movieObj.getLong("id");
+
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date releaseDate = format.parse(movieObj.getString("release_date"));
         Movie movie = new Movie(
           movieId,
           movieObj.getString("title"),
@@ -93,7 +96,9 @@ public class MovieConfig {
           new HashSet<>(),
           0,
           false,
-          new HashSet<>());
+          new HashSet<>(),
+          releaseDate,
+          "tmdb");
         movieReposiory.save(movie);
         JSONArray genreArr = movieObj.getJSONArray("genre_ids");
         Set<Genre> genreSet = new HashSet<>();
@@ -109,7 +114,7 @@ public class MovieConfig {
         }
         movie.getGenres().addAll(genreSet);
         movieReposiory.saveAndFlush(movie);
-      } catch (JSONException e) {
+      } catch (JSONException | ParseException e) {
         e.printStackTrace();
       }
     }

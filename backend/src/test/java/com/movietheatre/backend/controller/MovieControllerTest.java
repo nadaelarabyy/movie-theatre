@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -98,6 +99,6 @@ class MovieControllerTest {
     return new Movie(19404L, "mock title", "en", 90, "mock descritpion",
       2.2, 15, "mock director", "mock image path", new HashSet<>(),
       new HashSet<>(), new HashSet<>(), new HashSet<>(),
-      0, false,new HashSet<>());
+      0, false,new HashSet<>(),new Date(),"tmdb");
   }
 }

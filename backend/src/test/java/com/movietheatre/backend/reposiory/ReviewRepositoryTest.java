@@ -1,5 +1,6 @@
 package com.movietheatre.backend.reposiory;
 
+import com.movietheatre.backend.TestConfig;
 import com.movietheatre.backend.entities.Movie;
 import com.movietheatre.backend.entities.Review;
 import org.junit.jupiter.api.Test;
@@ -8,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -19,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@Import({TestConfig.class})
 class ReviewRepositoryTest {
   @Autowired
   TestEntityManager entityManager;
@@ -75,7 +79,7 @@ class ReviewRepositoryTest {
     Movie movie = new Movie(-1L, "mock title", "en", 90, "mock descritpion",
       2.2, 15, "mock director", "mock image path", new HashSet<>(),
       new HashSet<>(), new HashSet<>(), new HashSet<>(),
-      0, false,new HashSet<>());
+      0, false,new HashSet<>(),new Date(),"tmdb");
     return new Review("mock author name", "27-12-2020", "mock content",
       movie);
   }

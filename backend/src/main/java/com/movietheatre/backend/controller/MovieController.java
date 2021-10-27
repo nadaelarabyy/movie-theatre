@@ -51,4 +51,5 @@ public class MovieController {
       return new ResponseEntity(movieService.getMovieGenres(id),
         HttpStatus.OK);
   }
+
 }

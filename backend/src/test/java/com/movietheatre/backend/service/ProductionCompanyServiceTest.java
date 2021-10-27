@@ -1,5 +1,6 @@
 package com.movietheatre.backend.service;
 
+import com.movietheatre.backend.TestConfig;
 import com.movietheatre.backend.entities.Movie;
 import com.movietheatre.backend.entities.ProductionCompany;
 import com.movietheatre.backend.reposiory.ProducionCompanyRepository;
@@ -11,8 +12,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -21,6 +24,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Import({TestConfig.class})
 class ProductionCompanyServiceTest {
   @Mock
   private ProducionCompanyRepository producionCompanyRepository;
@@ -64,7 +68,7 @@ class ProductionCompanyServiceTest {
     return new Movie(19404L, "mock title", "en", 90, "mock descritpion",
       2.2, 15, "mock director", "mock image path", new HashSet<>(),
       new HashSet<>(), new HashSet<>(), new HashSet<>(),
-      0, false,new HashSet<>());
+      0, false,new HashSet<>(),new Date(),"tmdb");
   }
 
 }

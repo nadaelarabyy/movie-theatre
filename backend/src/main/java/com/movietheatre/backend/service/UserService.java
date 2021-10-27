@@ -1,5 +1,7 @@
 package com.movietheatre.backend.service;
 
+import com.movietheatre.backend.dto.MovieDTO;
+import com.movietheatre.backend.dto.MovieEditDTO;
 import com.movietheatre.backend.entities.Movie;
 import com.movietheatre.backend.entities.Rate;
 import com.movietheatre.backend.entities.RateId;
@@ -8,6 +10,8 @@ import com.movietheatre.backend.reposiory.RatingRespository;
 import com.movietheatre.backend.reposiory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
 import java.util.List;
 
 @Service
@@ -78,6 +82,12 @@ public class UserService {
       boolean shown = movie.isShown();
       movie.setShown(!shown);
       return movieService.updateMovie(movie);
+  }
+  public Movie addNewMovie(MovieDTO movieDTO) throws ParseException {
+    return movieService.addMovieByAdmin(movieDTO);
+  }
+  public Movie editMovie(Long id,MovieEditDTO movieEditDTO) throws ParseException {
+    return movieService.editMovie(id,movieEditDTO);
   }
 
 }

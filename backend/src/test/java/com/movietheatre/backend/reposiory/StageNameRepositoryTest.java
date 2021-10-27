@@ -1,5 +1,6 @@
 package com.movietheatre.backend.reposiory;
 
+import com.movietheatre.backend.TestConfig;
 import com.movietheatre.backend.entities.Cast;
 import com.movietheatre.backend.entities.Review;
 import com.movietheatre.backend.entities.StageName;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+@Import({TestConfig.class})
 class StageNameRepositoryTest {
   @Autowired
   private TestEntityManager entityManager;

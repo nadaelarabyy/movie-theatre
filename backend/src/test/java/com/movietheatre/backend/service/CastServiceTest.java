@@ -19,6 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
@@ -111,7 +112,7 @@ class CastServiceTest {
     return new Movie(19404L, "mock title", "en", 90, "mock descritpion",
       2.2, 15, "mock director", "mock image path", new HashSet<>(),
       new HashSet<>(), new HashSet<>(), new HashSet<>(),
-      0, false,new HashSet<>());
+      0, false,new HashSet<>(),new Date(),"tmdb");
   }
 
 

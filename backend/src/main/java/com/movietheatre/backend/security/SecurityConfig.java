@@ -5,6 +5,7 @@ import com.movietheatre.backend.filters.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -44,10 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    2- see movies recieved inappropriate flags
     http.authorizeRequests().antMatchers("/api/users/flagged")
       .hasAnyAuthority("admin");
-////    3-edit movie (language/ genre/ release date)
-//    http.authorizeRequests().antMatchers("").hasAnyAuthority("admin");
-////    4-add movie details
-//    http.authorizeRequests().antMatchers("").hasAnyAuthority("admin");
+//    3-edit movie (language/ genre/ release date)
+    http.authorizeRequests().antMatchers("/api/users/editmovie/**")
+      .hasAnyAuthority("admin");
+//    4-add movie details
+    http.authorizeRequests().antMatchers("/api/users/addmovie")
+      .hasAnyAuthority("admin");
 //    viewer
 //    1-rate a movie
     http.authorizeRequests().antMatchers("/api/users/rate")
