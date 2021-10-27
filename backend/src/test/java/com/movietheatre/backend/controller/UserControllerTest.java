@@ -1,6 +1,9 @@
 package com.movietheatre.backend.controller;
 
 import com.movietheatre.backend.TestConfig;
+import com.movietheatre.backend.dto.GenreDTO;
+import com.movietheatre.backend.dto.MovieDTO;
+import com.movietheatre.backend.dto.MovieEditDTO;
 import com.movietheatre.backend.entities.Movie;
 import com.movietheatre.backend.entities.Rate;
 import com.movietheatre.backend.entities.RateId;
@@ -199,6 +202,47 @@ class UserControllerTest {
       .andExpect(MockMvcResultMatchers.status().isForbidden());
 
   }
+
+  @Test
+//  viewer
+  void addMovie_as_admin() throws Exception{
+    MovieDTO movieDTO = getMovieDTO();
+    Movie movie = getMovie();
+    when(userService.addNewMovie(movieDTO)).thenReturn(movie);
+    Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("admin"));
+    mockMvc.perform(MockMvcRequestBuilders.post("/api/users/addmovie")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("{\"id\" : 1, \"title\" : \"some title\",\"lang\":\"en\", \"movieLength\":90,\"director\":\"some director\"," +
+          "\"rating\":2.0, \"likes\":10,\"imagePath\":\"www.google.com\", \"releaseDate\":\"2020-12-27\"," +
+          "\"genres\":[] }")
+        .accept(MediaType.APPLICATION_JSON)
+        .with(SecurityMockMvcRequestPostProcessors.user("nadaelarabyy@yahoo.com")
+          .roles("admin").password("nada@123").authorities(authorities))
+      )
+      .andExpect(MockMvcResultMatchers.status().isOk());
+  }
+  @Test
+//  viewer
+  void editMovie_as_admin() throws Exception{
+    MovieEditDTO movieDTO = getMoviEditDTO();
+    Movie movie = getMovie();
+    when(userService.editMovie(19404L,movieDTO)).thenReturn(movie);
+    Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("admin"));
+    mockMvc.perform(MockMvcRequestBuilders.put("/api/users/editmovie?id=19404")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("{ \"lang\":\"fr\", \"genres\":[] }")
+        .accept(MediaType.APPLICATION_JSON)
+        .with(SecurityMockMvcRequestPostProcessors.user("nadaelarabyy@yahoo.com")
+          .roles("admin").password("nada@123").authorities(authorities))
+      )
+      .andExpect(MockMvcResultMatchers.status().isOk());
+  }
+
+
+
+
   public List<User> getMockUsers(){
     List<User> users=new ArrayList<>();
     User user1 = new User(1L, "mock1@email.com", "mock123", "viewer",
@@ -216,6 +260,14 @@ class UserControllerTest {
       2.2, 15, "mock director", "mock image path", new HashSet<>(),
       new HashSet<>(), new HashSet<>(), new HashSet<>(),
       0, false,new HashSet<>(),new Date(),"tmdb");
+  }
+  public MovieEditDTO getMoviEditDTO(){
+    return new MovieEditDTO(new ArrayList<GenreDTO>(), "2020-12-27", "ar");
+  }
+  public MovieDTO getMovieDTO(){
+    return new MovieDTO(19404L, "mock title", "en",90, "mock descritpion", 2.2,
+      15, "mock director", "mock image path", "2020-12-27",
+      new HashSet<>());
   }
   public Rate getMockRate(){
     RateId rateId = new RateId(2L,19404L);

@@ -1,15 +1,15 @@
 package com.movietheatre.backend.service;
 
+import com.movietheatre.backend.dto.GenreDTO;
+import com.movietheatre.backend.dto.MovieDTO;
+import com.movietheatre.backend.dto.MovieEditDTO;
 import com.movietheatre.backend.entities.Genre;
 import com.movietheatre.backend.entities.Movie;
 import com.movietheatre.backend.reposiory.MovieReposiory;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,6 +17,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,7 +45,7 @@ class MovieServiceTest {
   }
 
   @Test
-  public void getAllMovies() {
+  public void getAllMovies() throws ParseException {
     Movie movie1 = getMovie();
     Movie movie2 = getMovie();
     movie2.setId(238L);
@@ -55,7 +58,7 @@ class MovieServiceTest {
   }
 
   @Test
-  public void getMovieById() {
+  public void getMovieById() throws ParseException {
     Movie movie = getMovie();
     when(movieReposiory.findById(19404L)).thenReturn(Optional.of(movie));
     Movie result = movieService.getMovieById(19404L);
@@ -64,7 +67,7 @@ class MovieServiceTest {
   }
 
   @Test
-  public void getMovieDetailsById() {
+  public void getMovieDetailsById() throws ParseException {
     Movie movie = getMovie();
     when(movieReposiory.findById(19404L))
       .thenReturn(Optional.of(movie));
@@ -76,7 +79,7 @@ class MovieServiceTest {
   }
 
   @Test
-  public void getMoviesPaginated() {
+  public void getMoviesPaginated() throws ParseException {
     Movie movie1 = getMovie();
     Movie movie2 = getMovie();
     movie2.setId(238L);
@@ -92,7 +95,7 @@ class MovieServiceTest {
   }
 
   @Test
-  public void getMovieGenres() {
+  public void getMovieGenres() throws ParseException {
     Movie movie1 = getMovie();
     Movie movie2 = getMovie();
     movie2.setId(238L);
@@ -106,7 +109,7 @@ class MovieServiceTest {
   }
 
   @Test
-  public void updateMovie() {
+  public void updateMovie() throws ParseException {
     Movie movie = getMovie();
     when(movieReposiory.saveAndFlush(movie)).thenReturn(movie);
     Movie result = movieService.updateMovie(movie);
@@ -114,7 +117,7 @@ class MovieServiceTest {
   }
 
   @Test
-  public void getInappropriateMovies() {
+  public void getInappropriateMovies() throws ParseException {
     Movie movie1 = getMovie();
     movie1.setInappropriate(11);
     Movie movie2 = getMovie();
@@ -129,8 +132,36 @@ class MovieServiceTest {
     assertTrue(result.contains(movie1));
     assertTrue(result.contains(movie2));
   }
-  public Movie getMovie(){
+  @Test
+  public void addMovieByAdminTest() throws ParseException {
+    Movie movie = getMovie();
+    MovieDTO movieDTO = getMovieDTO();
+    movieService.addMovieByAdmin(movieDTO);
 
+    verify(movieReposiory,times(1)).save(any());
+    ArgumentCaptor<Movie> captor = ArgumentCaptor.forClass(Movie.class);
+    verify(movieReposiory).save(captor.capture());
+    assertTrue(captor.getValue().getTitle().equals(movie.getTitle()));
+  }
+  @Test
+  public void editMovieByAdminTest() throws ParseException {
+    MovieEditDTO movieEditDTO = getMoviEditDTO();
+    Movie movie = getMovie();
+    when(movieReposiory.findById(19404L)).thenReturn(Optional.of(movie));
+    movieService.editMovie(19404L,movieEditDTO);
+    verify(movieReposiory,times(1)).saveAndFlush(any());
+  }
+  public MovieEditDTO getMoviEditDTO(){
+    return new MovieEditDTO(new ArrayList<GenreDTO>(), "2020-12-27", "ar");
+  }
+  public MovieDTO getMovieDTO(){
+    return new MovieDTO(19404L, "mock title", "en",90, "mock descritpion", 2.2,
+    15, "mock director", "mock image path", "2020-12-27",
+      new HashSet<>());
+  }
+  public Movie getMovie() throws ParseException {
+    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    Date releaseDate = format.parse("2020-12-27");
     return new Movie(19404L, "mock title", "en", 90, "mock descritpion",
       2.2, 15, "mock director", "mock image path", new HashSet<>(),
       new HashSet<>(), new HashSet<>(), new HashSet<>(),

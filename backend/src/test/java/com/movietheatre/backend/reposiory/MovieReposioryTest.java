@@ -4,6 +4,7 @@ import com.movietheatre.backend.TestConfig;
 import com.movietheatre.backend.entities.*;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -16,6 +17,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
@@ -86,6 +89,13 @@ class MovieReposioryTest {
     Movie movieReturned = movieReposiory.findById(movie2.getId()).get();
     assertEquals(movieReturned.getTitle(), movie2.getTitle());
 
+  }
+//  deleteMovieGenre
+  @Test
+  public void testDeleteMovieGenres(){
+    MovieReposiory movieRepo = Mockito.mock(MovieReposiory.class);
+    movieRepo.deleteGenresByMovieId(19404L);
+    verify(movieRepo,atLeastOnce()).deleteGenresByMovieId(19404L);
   }
 
   public Movie getMovie(){

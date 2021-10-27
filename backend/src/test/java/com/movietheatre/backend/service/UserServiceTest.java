@@ -1,5 +1,8 @@
 package com.movietheatre.backend.service;
 
+import com.movietheatre.backend.dto.GenreDTO;
+import com.movietheatre.backend.dto.MovieDTO;
+import com.movietheatre.backend.dto.MovieEditDTO;
 import com.movietheatre.backend.entities.Movie;
 import com.movietheatre.backend.entities.Rate;
 import com.movietheatre.backend.entities.RateId;
@@ -11,10 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -22,6 +22,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -123,6 +126,30 @@ class UserServiceTest {
     Movie movieReturned = userService.showHideMovie(movie.getId());
     assertEquals(movieReturned.getTitle(),movie.getTitle());
 
+  }
+  @Test
+  public void addMovieByAdminTest() throws ParseException {
+    Movie movie = getMovie();
+    MovieDTO movieDTO = getMovieDTO();
+    userService.addNewMovie(movieDTO);
+
+    verify(movieService,times(1)).addMovieByAdmin(any());
+   }
+  @Test
+  public void editMovieByAdminTest() throws ParseException {
+    MovieEditDTO movieEditDTO = getMoviEditDTO();
+    Movie movie = getMovie();
+    when(movieService.editMovie(19404L,movieEditDTO)).thenReturn(movie);
+    movieService.editMovie(19404L,movieEditDTO);
+    verify(movieService,times(1)).editMovie(19404L,movieEditDTO);
+  }
+  public MovieEditDTO getMoviEditDTO(){
+    return new MovieEditDTO(new ArrayList<GenreDTO>(), "2020-12-27", "ar");
+  }
+  public MovieDTO getMovieDTO(){
+    return new MovieDTO(19404L, "mock title", "en",90, "mock descritpion", 2.2,
+      15, "mock director", "mock image path", "2020-12-27",
+      new HashSet<>());
   }
   public List<User> getMockUsers(){
     List<User> users=new ArrayList<>();

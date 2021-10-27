@@ -173,6 +173,7 @@ public class MovieService {
       return genre;
     }).collect(Collectors.toSet());
     movieToCreate.setGenres(genresC);
+    System.out.println(movieToCreate);
     return movieReposiory.save(movieToCreate);
   }
   public Movie editMovie(Long id,MovieEditDTO movieEditDTO) throws ParseException {
