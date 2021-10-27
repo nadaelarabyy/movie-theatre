@@ -21,11 +21,11 @@ public class Movie {
   private String imagePath;
   @ManyToMany(mappedBy = "movies", fetch=FetchType.EAGER)
   private Set<Genre> genres;
-  @ManyToMany(mappedBy = "movies",fetch = FetchType.EAGER)
+  @ManyToMany(mappedBy = "movies",fetch = FetchType.LAZY)
   private Set<ProductionCompany> productionCompanyList;
-  @ManyToMany(mappedBy = "movies",fetch = FetchType.EAGER)
+  @ManyToMany(mappedBy = "movies",fetch = FetchType.LAZY)
   private Set<Cast> cast;
-  @OneToMany(mappedBy = "movie",fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "movie",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
   private Set<Review> reviews;
   private int inappropriate;
   private boolean shown;

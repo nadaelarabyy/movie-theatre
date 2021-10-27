@@ -11,7 +11,7 @@ public class ProductionCompany {
   @Id
   private Long id;
   private String name;
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
     name = "movies_production",
     joinColumns = @JoinColumn(name = "prod_id"),

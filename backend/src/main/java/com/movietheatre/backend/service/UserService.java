@@ -8,8 +8,6 @@ import com.movietheatre.backend.reposiory.RatingRespository;
 import com.movietheatre.backend.reposiory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,13 +26,19 @@ public class UserService {
   public List<User> getUsers(){
     return userRepository.findAll();
   }
+  public User getUserByEmail(String userEmail){
+    return userRepository.findAll().stream().filter(user -> user.getEmail().equals(userEmail))
+      .findFirst().orElse(null);
+  }
   public User getUserById(Long userId){
     return userRepository.findById(userId).orElse(null);
   }
   public Rate rateMovie(Long userId, Long movieId,double rating){
     User user = userRepository.getById(userId);
     Movie movie= movieService.getMovieById(movieId);
+
     RateId rateId = new RateId(userId,movieId);
+
     Rate rate = new Rate();
     rate.setRateId(rateId);
     rate.setMovie(movie);
@@ -42,6 +46,9 @@ public class UserService {
     rate.setRate(rating);
     user.getRates().add(rate);
     movie.getRates().add(rate);
+    double movieAvg = movie.getRates().stream().mapToDouble(Rate::getRate)
+      .average().orElse(0.0);
+    movie.setRating(movieAvg); //----> newly edited
     return ratingRespository.save(rate);
 
   }
@@ -61,22 +68,16 @@ public class UserService {
     }
     return entered? movieService.updateMovie(movie):movie;
   }
-  public List<Movie> getMoviesInappropriate(Long userId){
-    User user = getUserById(userId);
-    if(user.getRole().equals("admin")){
+  public List<Movie> getMoviesInappropriate(){
       return movieService.getInappropriateMovies();
-    }
-    return new ArrayList<>();
+
   }
-  public Movie showHideMovie(Long userId, Long movieId){
-    User user = getUserById(userId);
-    if(user.getRole().equals("admin")){
+  public Movie showHideMovie(Long movieId){
+
       Movie movie = movieService.getMovieById(movieId);
       boolean shown = movie.isShown();
       movie.setShown(!shown);
       return movieService.updateMovie(movie);
-    }
-    return null;
   }
 
 }

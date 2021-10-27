@@ -17,7 +17,7 @@ public class Cast {
   private String name;
   @OneToMany(mappedBy = "cast",cascade = CascadeType.ALL)
   private Set<StageName> stageNameList;
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
     name = "movies_cast",
     joinColumns = @JoinColumn(name = "movie_id"),

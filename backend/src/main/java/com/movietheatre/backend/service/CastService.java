@@ -61,8 +61,8 @@ public class CastService {
       for (int i = 0; i < size; i++) {
         JSONObject castObj = cast.getJSONObject(i);
         String path = castObj.getString("profile_path") == null ?
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4dAzC_zHw3FvK6qS8_YxygrIVP_HvYLv1tA&usqp=CAU" :
-          "http://image.tmdb.org/t/p/w92" + castObj.getString("profile_path");
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4dAzC_zHw3FvK6qS8_YxygrIVP_HvYLv1tA&usqp=CAU"
+          : "http://image.tmdb.org/t/p/w92" + castObj.getString("profile_path");
         Cast oldCast = this.getCastById(castObj.getLong("id"));
         if (oldCast == null) {
           Cast newCast = new Cast(castObj.getLong("id"), path,
@@ -73,8 +73,7 @@ public class CastService {
           stageNameService.addStageName(newStageName);
           newCast.getStageNameList().add(newStageName);
           newCast.getMovies().add(movie);
-
-          castRepository.save(newCast);
+           castRepository.save(newCast);
         } else {
 //          add a new stage name
           StageName newStageName = new StageName(
@@ -82,7 +81,7 @@ public class CastService {
             oldCast);
           stageNameService.addStageName(newStageName);
           oldCast.getStageNameList().add(newStageName);
-          castRepository.save(oldCast);
+           castRepository.save(oldCast);
         }
 
       }

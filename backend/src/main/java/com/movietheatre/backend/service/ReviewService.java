@@ -50,10 +50,9 @@ public class ReviewService {
 //
         String issueDate = reviewObj.getString("created_at");
         Review newReview = new Review(authorName,issueDate,content,movie);
-        reviewRepository.save(newReview);
         reviewList.add(newReview);
-
       }
+      reviewRepository.saveAll(reviewList);
 
     } catch (IOException | JSONException e) {
       e.printStackTrace();

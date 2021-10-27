@@ -82,13 +82,6 @@ public class MovieService {
       try {
         movie.setMovieLength(movieDetails.getInt("runtime"));
         movie.setImagePath(movieDetails.getString("image_path"));
-//        JSONArray genres = movieDetails.getJSONArray("genres");
-//        for(int i=0;genres.length()>i;i++){
-//          Long genreId = genres.getJSONObject(i).getLong("id");
-//          Genre genre = genreService.getGenreById(genreId);
-//          genre.getMovies().add(movie);
-//        }
-//        ========================================================================================
         JSONArray companies = movieDetails.getJSONArray("companies");
         for(int i=0;companies.length()>i;i++){
           Long cId = companies.getJSONObject(i).getLong("id");
@@ -114,8 +107,6 @@ public class MovieService {
         Set<Review> reviews=reviewService.addReviewsToMovie(movie);
         movie.setReviews(reviews);
         movieReposiory.saveAndFlush(movie);
-
-
       } catch (JSONException e) {
         e.printStackTrace();
       }
@@ -155,7 +146,7 @@ public class MovieService {
   }
   public List<Movie> getInappropriateMovies(){
     return movieReposiory.findAll().stream()
-      .filter(movie -> movie.getInappropriate()>0)
+      .filter(movie -> movie.getInappropriate()>10)
       .collect(Collectors.toList());
   }
 

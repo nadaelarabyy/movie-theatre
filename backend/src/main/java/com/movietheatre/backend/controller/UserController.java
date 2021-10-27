@@ -1,5 +1,10 @@
 package com.movietheatre.backend.controller;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movietheatre.backend.dto.FlagDTO;
 import com.movietheatre.backend.dto.RatingDTO;
 import com.movietheatre.backend.entities.Movie;
@@ -9,8 +14,26 @@ import com.movietheatre.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(path = "api/users")
@@ -37,19 +60,68 @@ public class UserController {
           HttpStatus.OK);
       }
       @GetMapping("/flagged")
-    public ResponseEntity<List<Movie>> getFlaggedMovies(@RequestParam(value = "id")
-                                                 Long userId){
+    public ResponseEntity<List<Movie>> getFlaggedMovies(){
         return new ResponseEntity<>(
-          userService.getMoviesInappropriate(userId),
+          userService.getMoviesInappropriate(),
           HttpStatus.OK
         );
       }
       @PutMapping(value = "/show", consumes = "application/json",
       produces = "application/json")
     public ResponseEntity<Movie> showHideMovie(@RequestBody FlagDTO dto){
-    return new ResponseEntity<>(userService.showHideMovie(dto.getUserId(),
-      dto.getMovieId()),HttpStatus.OK);
+    return new ResponseEntity<>(
+      userService.showHideMovie(dto.getMovieId()),
+      HttpStatus.OK
+    );
+      }
+      @GetMapping("/token/refresh")
+      public void refreshToken(HttpServletRequest request,
+                                            HttpServletResponse response) throws IOException {
+        String authorizationHeader = request.getHeader(AUTHORIZATION);
+        if(authorizationHeader!=null && authorizationHeader.startsWith("Bearer ")){
+          try {
+            String refresh_token = authorizationHeader.substring("Bearer ".length());
+            Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            DecodedJWT decodedJWT = verifier.verify(refresh_token);
+            String email = decodedJWT.getSubject();
+            User user = userService.getUserByEmail(email);
+            List<String> roles = new ArrayList<>();
+            roles.add(user.getRole());
+            String access_token = JWT.create()
+              .withSubject(user.getEmail())
+              .withExpiresAt(new Date(System.currentTimeMillis()+10*60*1000))
+              .withIssuer(request.getRequestURL().toString())
+              .withClaim("roles",roles)
+              .sign(algorithm);
+            Map<String,String> out = new HashMap<>();
+            out.put("access_token",access_token);
+            response.setContentType(APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(),out);
+          }
+          catch (Exception ex){
+            response.setHeader("error",ex.getMessage());
+            response.setStatus(FORBIDDEN.value());
+//            response.sendError(FORBIDDEN.value());
+            Map<String,String> error = new HashMap<>();
+            error.put("error_message",ex.getMessage());
+            response.setContentType(APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(),error);
+          }
+        }
+        else{
+          throw new RuntimeException("Refresh token is missing!!");
+        }
+
       }
 
+    @GetMapping("/logout")
+  public String logout(HttpServletRequest request,HttpServletResponse response) {
+      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+      if (auth != null) {
+        new SecurityContextLogoutHandler().logout(request, response, auth);
+      }
 
+      return "redirect:/login?logout";
+    }
 }

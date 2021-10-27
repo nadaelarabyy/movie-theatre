@@ -22,7 +22,7 @@ public class Review {
   private String issueDate;
   @Column(length = 70000)
   private String content;
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
   @JoinColumn(name = "movie_id")
   private Movie movie;
 

@@ -14,8 +14,9 @@ public class StageNameService {
     this.stageNameRepository = stageNameRepository;
   }
 
-  public void addStageName(StageName name){
-    stageNameRepository.save(name);
+  public StageName addStageName(StageName name){
+
+    return stageNameRepository.save(name);
   }
 
 }
