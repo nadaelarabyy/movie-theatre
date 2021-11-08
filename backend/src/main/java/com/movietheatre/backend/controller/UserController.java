@@ -50,6 +50,7 @@ public class UserController {
     Rate rating = userService.rateMovie(ratingDTO.getUserId(),ratingDTO.getMovieId(),ratingDTO.getRating());
     return new ResponseEntity<>(rating,HttpStatus.OK);
       }
+//      ===========>
     @PutMapping(value = "/flag", produces = "application/json",consumes = "application/json")
     public ResponseEntity<Movie> flagMovie(@RequestBody FlagDTO flagDTO){
         return new ResponseEntity<>(

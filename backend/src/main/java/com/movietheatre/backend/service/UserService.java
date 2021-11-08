@@ -42,7 +42,6 @@ public class UserService {
     Movie movie= movieService.getMovieById(movieId);
 
     RateId rateId = new RateId(userId,movieId);
-
     Rate rate = new Rate();
     rate.setRateId(rateId);
     rate.setMovie(movie);
